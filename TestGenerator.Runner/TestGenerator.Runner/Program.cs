@@ -14,27 +14,32 @@ namespace TestGenerator.Runner
         {
             List<string> inputPaths = new List<string>();
             string outputDirectory = null;
-            string filePath = null;
             int readingThreadAmout = 0;
             int writingThreadAmout = 0;
             int maxProcessingThreadAmout = 0;
 
-            do
+            //Test Data
+            string filePathTest = @"D:\study\3_course\My\ÑÏÏ\4lab_spp\TestClasses\Method.cs";
+            string outputDirectoryTest = @"D:\study\3_course\My\ÑÏÏ\4lab_spp\Output";
+            int readingThreadAmoutTest = 2;
+            int writingThreadAmoutTest = 2;
+            int maxProcessingThreadAmoutTest = 2;
+            var testMode = true;
+            //
+
+            if (testMode)
             {
-                Console.WriteLine("Write path to input file(.cs) (To complete the entry press Enter)");
+                // generate with test data
+                return;
+            }
 
-                filePath = Console.ReadLine();
+            initializeInputPaths(inputPaths);
 
-                if (File.Exists(filePath))
-                {
-                    inputPaths.Add(filePath);
-                }
-                else if (filePath != "")
-                {
-                    Console.WriteLine("File not found: " + filePath);
-                }
-
-            } while (filePath != "");
+            if (inputPaths.Count == 0)
+            {
+                Console.WriteLine("Not found correct path to c# class file.");
+                initializeInputPaths(inputPaths);
+            }
 
             Console.WriteLine("Write path to output directory");
 
@@ -65,6 +70,28 @@ namespace TestGenerator.Runner
             } while (!Int32.TryParse(Console.ReadLine(), out maxProcessingThreadAmout));
 
             Console.ReadKey();
+        }
+
+        private static void initializeInputPaths(List<string> inputPaths)
+        {
+            string filePath = null;
+
+            do
+            {
+                Console.WriteLine("Write path to input file(.cs) (To complete the entry press Enter)");
+
+                filePath = Console.ReadLine();
+
+                if (File.Exists(filePath))
+                {
+                    inputPaths.Add(filePath);
+                }
+                else if (filePath != "")
+                {
+                    Console.WriteLine("File not found: " + filePath);
+                }
+
+            } while (filePath != "");
         }
     }
 }
