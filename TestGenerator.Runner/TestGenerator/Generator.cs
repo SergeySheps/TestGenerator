@@ -26,6 +26,10 @@ namespace TestGenerator
         {
             var reader = new TransformBlock<string, Task<string>>(inputData => ReadFileAsync(inputData),
                 new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = readingThreadAmout });
+
+            var writer = new ActionBlock<Task<List<GeneratedTestResult>>>((generatedClass => WriteFileAsync(generatedClass)),
+                new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = writingThreadAmout });
+
             return null;
         }
 
@@ -37,5 +41,16 @@ namespace TestGenerator
             }
         }
 
+        private async void WriteFileAsync(Task<List<GeneratedTestResult>> generateResult)
+        {
+            var results = await generateResult;
+            foreach (var result in results)
+            {
+                using (StreamWriter sw = new StreamWriter(result.OutputPath))
+                {
+                    await sw.WriteAsync(result.Result);
+                }
+            }
+        }
     }
 }
