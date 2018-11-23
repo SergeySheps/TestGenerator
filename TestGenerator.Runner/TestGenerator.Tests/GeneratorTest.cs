@@ -25,7 +25,7 @@ namespace TestGenerator.Tests
 
             paths = new List<string>();
 
-            paths.Add("../../../../TestClasses/TwoClasses.cs");
+            paths.Add("../../TwoClasses.cs.TestAble");
 
             generator.Generate(paths).Wait();
             

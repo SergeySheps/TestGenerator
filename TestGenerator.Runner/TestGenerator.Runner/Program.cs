@@ -23,7 +23,7 @@ namespace TestGenerator.Runner
             int readingThreadAmoutTest = 2;
             int writingThreadAmoutTest = 2;
             int maxProcessingThreadAmoutTest = 2;
-            var isTestMode = false;
+            var isTestMode = true;
             //
 
             if (isTestMode)

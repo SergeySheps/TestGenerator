@@ -12,9 +12,10 @@ namespace TestGenerator
 {
     public class CodeParser
     {
-        public async Task<List<GeneratedTestResult>> GenerateTestsAsync(Task<string> taskInputFile, string outputDirectory)
+        public List<GeneratedTestResult> GenerateTestsAsync(string taskInputFile, string outputDirectory)
         {
-            string source = await taskInputFile;
+            //taskInputFile.Wait();
+            string source = taskInputFile;
             var res = new List<GeneratedTestResult>();
 
             var syntaxTree = CSharpSyntaxTree.ParseText(source);
@@ -81,7 +82,11 @@ namespace TestGenerator
         private string GetMethodName(List<string> methods, string method, int count)
         {
             var res = method + (count == 0 ? "" : count.ToString());
-            if (methods.Contains(res)) return GetMethodName(methods, method, count + 1);
+
+            if (methods.Contains(res))
+            {
+                return GetMethodName(methods, method, count + 1);
+            }
 
             return res;
         }

@@ -24,14 +24,14 @@ namespace TestGenerator
         {
             var codeParser = new CodeParser();
 
-            var reader = new TransformBlock<string, Task<string>>(inputData => ReadFileAsync(inputData),
+            var reader = new TransformBlock<string, string>(inputData => ReadFileAsync(inputData),
                 new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = readingThreadAmout });
 
-            var generator = new TransformBlock<Task<string>, Task<List<GeneratedTestResult>>>(
+            var generator = new TransformBlock<string, List<GeneratedTestResult>>(
                 inputData => codeParser.GenerateTestsAsync(inputData, outputDirectory),
                 new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = maxProcessingThreadAmout });
 
-            var writer = new ActionBlock<Task<List<GeneratedTestResult>>>((generatedClass => WriteFileAsync(generatedClass)),
+            var writer = new ActionBlock<List<GeneratedTestResult>>((generatedClass => WriteFileAsync(generatedClass)),
                 new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = writingThreadAmout });
 
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
@@ -52,14 +52,16 @@ namespace TestGenerator
         public async Task<string> ReadFileAsync(string path)
         {
             using (StreamReader sr = new StreamReader(path))
-            {
-                return await sr.ReadToEndAsync();
+            {    
+                return await Task.Run(() => sr.ReadToEndAsync());
             }
         }
 
-        private async void WriteFileAsync(Task<List<GeneratedTestResult>> generateResult)
+        private async void WriteFileAsync(List<GeneratedTestResult> generateResult)
         {
-            var results = await generateResult;
+
+            var results = generateResult;
+
             foreach (var result in results)
             {
                 using (StreamWriter sw = new StreamWriter(result.OutputPath))

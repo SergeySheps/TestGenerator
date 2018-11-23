@@ -156,6 +156,7 @@
   <ItemGroup>
     <Compile Include="GeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="TwoClasses.cs.TestAble" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
