@@ -12,7 +12,7 @@ namespace TestGenerator
         int writingThreadAmout;
         int maxProcessingThreadAmout;
 
-        Generator(string outputDirectory, int readingThreadAmout, int writingThreadAmout, int maxProcessingThreadAmout)
+        public Generator(string outputDirectory, int readingThreadAmout, int writingThreadAmout, int maxProcessingThreadAmout)
         {
             this.outputDirectory = outputDirectory;
             this.readingThreadAmout = readingThreadAmout;

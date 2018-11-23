@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestGenerator\TestGenerator.csproj">
+      <Project>{fe6b23e1-f278-4e09-96c6-1148cdfbd2ef}</Project>
+      <Name>TestGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

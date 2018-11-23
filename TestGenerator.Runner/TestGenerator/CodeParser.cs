@@ -12,7 +12,7 @@ namespace TestGenerator
 {
     public class CodeParser
     {
-        private async Task<List<GeneratedTestResult>> GenerateTestsAsync(Task<string> taskInputFile, string outputDirectory)
+        public async Task<List<GeneratedTestResult>> GenerateTestsAsync(Task<string> taskInputFile, string outputDirectory)
         {
             string source = await taskInputFile;
             var res = new List<GeneratedTestResult>();

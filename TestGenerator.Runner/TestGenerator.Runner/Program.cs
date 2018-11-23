@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestGenerator.Runner
 {
@@ -19,57 +16,70 @@ namespace TestGenerator.Runner
             int maxProcessingThreadAmout = 0;
 
             //Test Data
-            string filePathTest = @"D:\study\3_course\My\严蟎4lab_spp\TestClasses\Method.cs";
+            string filePathTest1 = @"D:\study\3_course\My\严蟎4lab_spp\TestClasses\TwoClasses.cs";
+            string filePathTest2 = @"D:\study\3_course\My\严蟎4lab_spp\TestClasses\Method.cs";
+            string filePathTest3 = @"D:\study\3_course\My\严蟎4lab_spp\TestClasses\Faker.cs";
             string outputDirectoryTest = @"D:\study\3_course\My\严蟎4lab_spp\Output";
             int readingThreadAmoutTest = 2;
             int writingThreadAmoutTest = 2;
             int maxProcessingThreadAmoutTest = 2;
-            var testMode = true;
+            var isTestMode = true;
             //
 
-            if (testMode)
+            if (isTestMode)
             {
-                // generate with test data
-                return;
+                Generator generator = new Generator(outputDirectoryTest, readingThreadAmoutTest, writingThreadAmoutTest, maxProcessingThreadAmoutTest);
+                var pathList = new List<string>();
+                pathList.Add(filePathTest1);
+                pathList.Add(filePathTest2);
+                pathList.Add(filePathTest3);
+
+                generator.Generate(pathList).Wait();
+
+                Console.WriteLine("Done");
+                Console.ReadKey();
             }
-
-            initializeInputPaths(inputPaths);
-
-            if (inputPaths.Count == 0)
+            else
             {
-                Console.WriteLine("Not found correct path to c# class file.");
+
                 initializeInputPaths(inputPaths);
+
+                if (inputPaths.Count == 0)
+                {
+                    Console.WriteLine("Not found correct path to c# class file.");
+                    initializeInputPaths(inputPaths);
+                }
+
+                Console.WriteLine("Write path to output directory");
+
+                outputDirectory = Console.ReadLine();
+
+                if (!Directory.Exists(outputDirectory))
+                {
+                    Console.WriteLine("Output directory not found: " + outputDirectory);
+                    outputDirectory = Directory.GetCurrentDirectory();
+                }
+
+                do
+                {
+                    Console.WriteLine("Write amount of reading threads");
+
+                } while (!Int32.TryParse(Console.ReadLine(), out readingThreadAmout));
+
+                do
+                {
+                    Console.WriteLine("Write amount of writing threads");
+
+                } while (!Int32.TryParse(Console.ReadLine(), out writingThreadAmout));
+
+                do
+                {
+                    Console.WriteLine("Write max amount of processing threads");
+
+                } while (!Int32.TryParse(Console.ReadLine(), out maxProcessingThreadAmout));
+
+                Console.ReadKey();
             }
-
-            Console.WriteLine("Write path to output directory");
-
-            outputDirectory = Console.ReadLine();
-
-            if (!Directory.Exists(outputDirectory))
-            {
-                Console.WriteLine("Output directory not found: " + outputDirectory);
-                outputDirectory = Directory.GetCurrentDirectory();
-            }
-
-            do
-            {
-                Console.WriteLine("Write amount of reading threads");
-
-            } while (!Int32.TryParse(Console.ReadLine(), out readingThreadAmout));
-
-            do
-            {
-                Console.WriteLine("Write amount of writing threads");
-
-            } while (!Int32.TryParse(Console.ReadLine(), out writingThreadAmout));
-
-            do
-            {
-                Console.WriteLine("Write max amount of processing threads");
-
-            } while (!Int32.TryParse(Console.ReadLine(), out maxProcessingThreadAmout));
-
-            Console.ReadKey();
         }
 
         private static void initializeInputPaths(List<string> inputPaths)
