@@ -23,21 +23,18 @@ namespace TestGenerator.Runner
             int readingThreadAmoutTest = 2;
             int writingThreadAmoutTest = 2;
             int maxProcessingThreadAmoutTest = 2;
-            var isTestMode = true;
+            var isTestMode = false;
             //
 
             if (isTestMode)
             {
                 Generator generator = new Generator(outputDirectoryTest, readingThreadAmoutTest, writingThreadAmoutTest, maxProcessingThreadAmoutTest);
-                var pathList = new List<string>();
-                pathList.Add(filePathTest1);
-                pathList.Add(filePathTest2);
-                pathList.Add(filePathTest3);
 
-                generator.Generate(pathList).Wait();
+                inputPaths.Add(filePathTest1);
+                inputPaths.Add(filePathTest2);
+                inputPaths.Add(filePathTest3);
 
-                Console.WriteLine("Done");
-                Console.ReadKey();
+                generator.Generate(inputPaths).Wait();
             }
             else
             {
@@ -60,26 +57,31 @@ namespace TestGenerator.Runner
                     outputDirectory = Directory.GetCurrentDirectory();
                 }
 
-                do
-                {
-                    Console.WriteLine("Write amount of reading threads");
+                readingThreadAmout = getThreadAmount("Write amount of reading threads");
+                writingThreadAmout = getThreadAmount("Write amount of writing threads");
+                maxProcessingThreadAmout = getThreadAmount("Write max amount of processing threads");
 
-                } while (!Int32.TryParse(Console.ReadLine(), out readingThreadAmout));
+                Generator generator = new Generator(outputDirectory, readingThreadAmout, writingThreadAmout, maxProcessingThreadAmout);
 
-                do
-                {
-                    Console.WriteLine("Write amount of writing threads");
-
-                } while (!Int32.TryParse(Console.ReadLine(), out writingThreadAmout));
-
-                do
-                {
-                    Console.WriteLine("Write max amount of processing threads");
-
-                } while (!Int32.TryParse(Console.ReadLine(), out maxProcessingThreadAmout));
-
-                Console.ReadKey();
+                generator.Generate(inputPaths).Wait();
             }
+
+            Console.WriteLine("Done");
+
+            Console.ReadKey();
+        }
+
+        private static int getThreadAmount(string message)
+        {
+            int res = 0;
+
+            do
+            {
+                Console.WriteLine(message);
+
+            } while (!int.TryParse(Console.ReadLine(), out res));
+
+            return res;
         }
 
         private static void initializeInputPaths(List<string> inputPaths)
