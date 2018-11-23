@@ -49,7 +49,7 @@ namespace TestGenerator
             return writer.Completion;
         }
 
-        private async Task<string> ReadFileAsync(string path)
+        public async Task<string> ReadFileAsync(string path)
         {
             using (StreamReader sr = new StreamReader(path))
             {
